@@ -1,0 +1,125 @@
+<div class="col-lg-8 col-md-10 col-sm-12 mt-5 mx-auto">
+    <h2>Below are the list of all items available right now.If you want to add a new item, then click below.</h2>
+    <div *ngIf="error" class="alert alert-danger mt-3">Something went wrong. Try again later.</div>
+    <div *ngIf="!addItems;else addItemForm">
+        <button type="button" class="btn btn-primary mt-4 mb-4" id="add-btn" (click)="addItem()">Add new item</button>
+    </div>
+    <ng-template #addItemForm>
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <p>Enter details of product below and select the save button.</p>
+                <form [formGroup]="productAdditionForm">
+                    <div class="mb-2">
+                        <label for="prodt_id">Product Id</label>
+                        <input type="text" id="product_id" name="prodt_id" formControlName="productId"
+                            class="form-control">
+                        <div *ngIf="productAdditionForm.controls.productId.invalid && (productAdditionForm.controls.productId.dirty || productAdditionForm.controls.productId.touched)"
+                            class="alert alert-danger mt-2">
+                            <div *ngIf="productAdditionForm.controls.productId.errors?.['required']">
+                                Product Id is required.
+                            </div>
+                            <div *ngIf="productAdditionForm.controls.productId.errors?.['pattern']">
+                                Product Id should comprise only numbers
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="prodt_name">Name of the product</label>
+                        <input type="text" id="product_name" name="prodt_name"
+                            formControlName="productTitle" class="form-control">
+                        <div *ngIf="productAdditionForm.controls.productTitle.invalid && (productAdditionForm.controls.productTitle.dirty || productAdditionForm.controls.productTitle.touched)"
+                            class="alert alert-danger mt-2">
+                            <div *ngIf="productAdditionForm.controls.productTitle.errors?.['required']">
+                                Product Name is required.
+                            </div>
+                            <div
+                                *ngIf="productAdditionForm.controls.productTitle.errors?.['minlength'] || productAdditionForm.controls.productTitle?.['maxlength'] ">
+                                Product Name should be between 5-15 characters in length.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="prodt_type">Product Type</label>
+                        <select id="types" name="prodt_type" formControlName="productCategory">
+                            <option *ngFor="let i of productTypes" [value]="i">{{ i }}</option>
+                        </select>
+                        <div *ngIf="productAdditionForm.controls.productCategory.invalid && (productAdditionForm.controls.productCategory.dirty || productAdditionForm.controls.productCategory.touched)"
+                            class="alert alert-danger mt-2">
+                            <div *ngIf="productAdditionForm.controls.productCategory.errors?.['required']">
+                                Product Type is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="prodt_desc">Product Description</label>
+                        <input type="text" id="product_desc" name="prodt_desc" formControlName="productDesc"
+                            class="form-control">
+                        <div *ngIf="productAdditionForm.controls.productDesc.invalid && (productAdditionForm.controls.productDesc.dirty || productAdditionForm.controls.productDesc.touched)"
+                            class="alert alert-danger mt-2">
+                            <div *ngIf="productAdditionForm.controls.productDesc.errors?.['required']">
+                                Product Description is required.
+                            </div>
+                            <div
+                                *ngIf="productAdditionForm.controls.productDesc.errors?.['minlength'] || productAdditionForm.controls.productDesc?.['maxlength'] ">
+                                Product Description should be between 5-60 characters in length.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="prodt_img">Product Image</label>
+                        <input type="text" id="product_img" name="prodt_img" formControlName="productImage"
+                            class="form-control" placeholder="Image url here">
+                        <div *ngIf="productAdditionForm.controls.productImage.invalid && (productAdditionForm.controls.productImage.dirty || productAdditionForm.controls.productImage.touched)"
+                            class="alert alert-danger mt-2">
+                            <div *ngIf="productAdditionForm.controls.productImage.errors?.['required']">
+                                Product Image is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="prodt_rate">Product Price</label>
+                        <input type="text" id="product_rate" name="prodt_rate"
+                            formControlName="productPrice" class="form-control"
+                            placeholder="Product price in INR">
+                        <div *ngIf="productAdditionForm.controls.productPrice.invalid && (productAdditionForm.controls.productPrice.dirty || productAdditionForm.controls.productPrice.touched)"
+                            class="alert alert-danger mt-2">
+                            <div *ngIf="productAdditionForm.controls.productPrice.errors?.['required']">
+                                Product price is required.
+                            </div>
+                            <div *ngIf="productAdditionForm.controls.productPrice.errors?.['pattern']">
+                                Product price should comprise only numbers
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-success w-50" id="add-item"
+                            [disabled]="productAdditionForm.invalid" (click)="addItemToDB()">
+                            Add item
+                        </button>
+                        <button type="button" class="btn btn-danger w-50" id="cancel-item"
+                            (click)="cancelAddition(true)">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-template>
+</div>
+<div class="col-lg-5 col-md-10 col-sm-10 mx-auto" *ngIf="products">
+    <div *ngFor="let product of products;let i=index" class="d-flex">
+        <div class="card mb-3">
+            <div class="card-body">
+                <img src="{{product.image}}" style="width:25%" id="img_{{i}}>">
+                <p><b>{{product.title}}</b></p>
+                <p><b>{{product.price | currency :'INR'}}</b></p>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-primary" id="view-details" (click)="viewDetails(product)">View Details and modify</button>
+                    <button type="button" class="btn btn-info" id="delete"
+                        (click)="deleteItem(product.id)">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

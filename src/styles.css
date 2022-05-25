@@ -1,0 +1,45 @@
+/* You can add global styles to this file, and also import other style files */
+.text-white{
+    color:#FFFFFF
+}
+.f-18{
+    font-size:18px;
+}
+.home-bg{
+    /* background-color: lavender; */
+    background-image: url(./assets/img/istockphoto-1206800961-612x612.jpg);
+    background-color: #cccccc; /* Used if the image is unavailable */
+    height: 500px; /* You must set a specified height */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */    
+}
+.error-border{
+    border:3px solid red;
+}
+.col {
+    border: solid 1px #6c757d;
+    padding: 10px;
+}
+
+.card-dec > .card {
+    flex-basis: 100% !important;
+}
+
+@media (min-width: 576px) {
+    .card-dec > .card {
+        flex-basis: calc(50% - 30px)!important;
+    }
+}
+
+@media (min-width: 768px) {
+    .card-dec > .card {
+        flex-basis: calc(33.33% - 30px)!important;
+    }
+}
+
+@media (min-width: 992px) {
+    .card-dec > .card {
+        flex-basis: calc(25% - 30px)!important;
+    }
+}

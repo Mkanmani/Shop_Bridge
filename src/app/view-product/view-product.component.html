@@ -1,0 +1,109 @@
+<div class="col-lg-7 col-md-8 col-sm-10 mx-auto mt-5 pt-5">
+    <h2>Below are the details of the product selected.To modify any select the modify button below.</h2>
+    <div *ngIf="!modifyChosen;else displayFormForModify" class="card shadow">
+        <div class="card-body">
+            <img src="{{productData.image}}" style="width:25%">
+            <p><b>Product Name: {{productData.title}}</b></p>
+            <p><b>Product Price: {{productData.price | currency :'INR'}}</b></p>
+            <p><b>Product Type: {{productData.category}}</b></p>
+            <p><b>Product Reference ID: {{productData.id}}</b></p>
+            <p><b>Product Description: {{productData.description}}</b></p>
+            <p><b>Product Rating: {{productData.rating.rate}}</b></p>
+            <p><b>Product Numbers Available: {{productData.rating.count}}</b></p>
+            <div class="d-flex justify-content-between mt-4">
+                <button type="button" class="btn btn-warning" (click)="modifyItem()">
+                    Modify
+                </button>
+                <button type="button" class="btn btn-primary" (click)="navToDashboard()">
+                    Go back to dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+    <ng-template #displayFormForModify>
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <form [formGroup]="productModificationForm">
+                    <div class="mb-2">
+                        <label for="prodt_name">Name of the product</label>
+                        <input type="text" id="product_name" name="prodt_name"
+                            formControlName="productTitle" class="form-control">
+                        <div *ngIf="productModificationForm.controls.productTitle.invalid && (productModificationForm.controls.productTitle.dirty || productModificationForm.controls.productTitle.touched)"
+                            class="alert alert-danger mt-2">
+                            <div *ngIf="productModificationForm.controls.productTitle.errors?.['required']">
+                                Product Name is required.
+                            </div>
+                            <div
+                                *ngIf="productModificationForm.controls.productTitle.errors?.['minlength'] || productModificationForm.controls.productTitle?.['maxlength'] ">
+                                Product Name should be between 5-15 characters in length.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="prodt_type">Product Type</label>
+                        <select id="types" name="prodt_type" formControlName="productCategory">
+                            <option *ngFor="let i of productTypes" [value]="i">{{ i }}</option>
+                        </select>
+                        <div *ngIf="productModificationForm.controls.productCategory.invalid && (productModificationForm.controls.productCategory.dirty || productModificationForm.controls.productCategory.touched)"
+                            class="alert alert-danger mt-2">
+                            <div *ngIf="productModificationForm.controls.productCategory.errors?.['required']">
+                                Product Type is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="prodt_desc">Product Description</label>
+                        <input type="text" id="product_desc" name="prodt_desc" formControlName="productDesc"
+                            class="form-control">
+                        <div *ngIf="productModificationForm.controls.productDesc.invalid && (productModificationForm.controls.productDesc.dirty || productModificationForm.controls.productDesc.touched)"
+                            class="alert alert-danger mt-2">
+                            <div *ngIf="productModificationForm.controls.productDesc.errors?.['required']">
+                                Product Description is required.
+                            </div>
+                            <div
+                                *ngIf="productModificationForm.controls.productDesc.errors?.['minlength'] || productModificationForm.controls.productDesc?.['maxlength'] ">
+                                Product Description should be between 5-60 characters in length.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="prodt_img">Product Image</label>
+                        <input type="text" id="product_img" name="prodt_img" formControlName="productImage"
+                            class="form-control" placeholder="Image url here">
+                        <div *ngIf="productModificationForm.controls.productImage.invalid && (productModificationForm.controls.productImage.dirty || productModificationForm.controls.productImage.touched)"
+                            class="alert alert-danger mt-2">
+                            <div *ngIf="productModificationForm.controls.productImage.errors?.['required']">
+                                Product Image is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="prodt_rate">Product Price</label>
+                        <input type="text" id="product_rate" name="prodt_rate"
+                            formControlName="productPrice" class="form-control"
+                            placeholder="Product price in INR">
+                        <div *ngIf="productModificationForm.controls.productPrice.invalid && (productModificationForm.controls.productPrice.dirty || productModificationForm.controls.productPrice.touched)"
+                            class="alert alert-danger mt-2">
+                            <div *ngIf="productModificationForm.controls.productPrice.errors?.['required']">
+                                Product price is required.
+                            </div>
+                            <div *ngIf="productModificationForm.controls.productPrice.errors?.['pattern']">
+                                Product price should comprise only numbers
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-success w-50" id="add-item"
+                            [disabled]="productModificationForm.invalid" (click)="saveModifiedItem()">
+                            Modify item
+                        </button>
+                        <button type="button" class="btn btn-danger w-50" id="cancel-item"
+                            (click)="modifyChosen = !modifyChosen">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-template>
+</div>

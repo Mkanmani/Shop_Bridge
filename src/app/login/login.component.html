@@ -1,0 +1,42 @@
+<h1 class="text-center mt-5">Login by entering your credentials</h1>
+<div class="col-lg-5 col-md-8 col-sm-10 mx-auto">
+    <div *ngIf="error" class="alert alert-danger mt-3">Kindly enter valid credentials.</div>
+    <div class="card shadow mt-5 pt-5">
+        <div class="card-body">
+            <p>Enter your email Id as user name below</p>
+            <form class="form-group" [formGroup]="loginForm">
+                <div class="mb-2">
+                    <label for="user_name">Username</label>
+                    <input type="text" id="u_name" name="user_name" formControlName="username" class="form-control" [ngClass]="{'error-border':error}" placeholder="give user id as eve.holt@reqres.in">
+                    <div *ngIf="loginForm.controls.username.invalid && (loginForm.controls.username.dirty || loginForm.controls.username.touched)"
+                        class="alert alert-danger mt-2">
+                        <div *ngIf="loginForm.controls.username.errors?.['required']">
+                            Username is required.
+                        </div>
+                        <div
+                            *ngIf="loginForm.controls.username.errors?.['minlength'] || loginForm.controls.username.errors?.['maxlength'] ">
+                            Username will be between 5-25 characters in length.
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label for="passwrd">Password</label>
+                    <input type="password" id="pwd" name="passwrd" formControlName="password" class="form-control" [ngClass]="{'error-border':error}">
+                    <div class="mt-2" *ngIf="loginForm.controls.password.invalid && (loginForm.controls.password.dirty || loginForm.controls.password.touched)"
+                        class="alert alert-danger mt-2">
+                        <div *ngIf="loginForm.controls.username.errors?.['required']">
+                            Password is required.
+                        </div>
+                        <div
+                            *ngIf="loginForm.controls.password.errors?.['minlength'] || loginForm.controls.password.errors?.['maxlength'] ">
+                            Password will be between 8-20 characters in length.
+                        </div>
+                    </div>
+                </div>
+                <button type="button" [disabled]="!loginForm.valid || error" class="btn btn-primary mt-4" (click)="login()">
+                    Login
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
